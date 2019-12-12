@@ -57,6 +57,12 @@
        const attendance = this.getAttendance();
        attendance[studentName][day-1] = attendStatus;
        this.initiateAttendance(attendance);
+     },
+
+     //Count the day that the student missed
+     countDaysMissed: function(studentName){
+       const attendance = this.getStudentAttendance(studentName);
+       return attendance.filter(status => !status).length;
      }
    };
 
@@ -104,7 +110,7 @@
             
              i++;
           }
-          studentRow += `<td class="missed-col">0</td>`;
+          studentRow += `<td class="missed-col">${model.countDaysMissed(name)}</td>`;
           studentRow += ' </tr>' 
           $this.tableBody.append(studentRow);
 
@@ -113,8 +119,5 @@
      },
    };
 
-
-   
    view.init();
-   
 }());
