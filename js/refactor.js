@@ -67,19 +67,42 @@
      init: function(){
        this.studentTable = $('#studentTable');
        this.tableHead = $('#tableHead');
+       this.tableBody = $('#tableBody');
        this.render();
        
      },
+
+     // render the page view
      render: function(){
        this.renderHead();
+       this.renderBody();
      },
 
+     //render the head of the table
      renderHead: function(){
        let i = 1;
        while(i<= schoolDays){
          this.tableHead.find('.missed-col').before(`<th>${i}</th>`);
          i++;
        }
+     },
+
+     //render the body of the table
+     renderBody: function(){
+       const $this = this;
+       studentsNames.forEach(function(name){
+          let studentRow  = `<tr class="student">` ;
+          studentRow += `<td class="name-col">${name}</td>`
+          let i = 1;
+           while(i<= schoolDays){
+            studentRow += `<td class="attend-col"><input type="checkbox"></td>`;
+             i++;
+          }
+          studentRow += `<td class="missed-col">0</td>`;
+          studentRow += ' </tr>' 
+          $this.tableBody.append(studentRow);
+
+       });
      }
    };
 
