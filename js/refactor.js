@@ -3,6 +3,7 @@
                       'Gregory th Goat','Adam the Anaconda'],
           schoolDays = 12;
 
+  /*-------- Model ----------*/
    const model = {
      init: function(){
        if (!localStorage.attendance) {
@@ -66,9 +67,31 @@
      }
    };
 
-   model.init();
+
+   /*-------- Controller ----------*/
+   const controller = {
+
+     init: function(){
+       model.init();
+       view.init();
+       view.checkedChange();
+     },
+
+     getStudentDayAttend: function(studentName, day){
+       return model.getStudentDayAttend(studentName, day);
+     },
+    
+     setStudentDayAttend: function(studentName, day, status){
+       model.setStudentDayAttend(studentName, day, status);
+     },
+      countDaysMissed: function(studentName){
+       return model.countDaysMissed(studentName);
+     }
+
+   };
    
    
+   /*-------- View ----------*/
    const view = {
      init: function(){
        this.studentTable = $('#studentTable');
@@ -102,7 +125,7 @@
           studentRow += `<td class="name-col">${name}</td>`
           let i = 1;
            while(i<= schoolDays){
-             const status = model.getStudentDayAttend(name, i);
+             const status = controller.getStudentDayAttend(name, i);
              if(status){
                studentRow += `<td class="attend-col"><input type="checkbox"checked data-day-nbr="${i}"></td>`;
              }else{
@@ -111,7 +134,7 @@
             
              i++;
           }
-          studentRow += `<td class="missed-col">${model.countDaysMissed(name)}</td>`;
+          studentRow += `<td class="missed-col">${controller.countDaysMissed(name)}</td>`;
           studentRow += ' </tr>' 
           $this.tableBody.append(studentRow);
 
@@ -128,7 +151,7 @@
                day = $(e.currentTarget).data('day-nbr'),
                studentName = $(e.currentTarget).parents('tr').attr('id');
 
-         model.setStudentDayAttend(studentName, day, dayStatus);
+         controller.setStudentDayAttend(studentName, day, dayStatus);
 
          $this.tableBody.html('');
          $this.renderBody();
@@ -137,6 +160,5 @@
      }
    };
 
-   view.init();
-   view.checkedChange();
+   controller.init();
 }());
