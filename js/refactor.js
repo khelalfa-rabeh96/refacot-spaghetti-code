@@ -96,6 +96,7 @@
      //render the body of the table
      renderBody: function(){
        const $this = this;
+
        studentsNames.forEach(function(name){
           let studentRow  = `<tr class="student" id="${name}">` ;
           studentRow += `<td class="name-col">${name}</td>`
@@ -103,9 +104,9 @@
            while(i<= schoolDays){
              const status = model.getStudentDayAttend(name, i);
              if(status){
-               studentRow += `<td class="attend-col"><input type="checkbox"checked></td>`;
+               studentRow += `<td class="attend-col"><input type="checkbox"checked data-day-nbr="${i}"></td>`;
              }else{
-               studentRow += `<td class="attend-col"><input type="checkbox"></td>`;
+               studentRow += `<td class="attend-col"><input type="checkbox" data-day-nbr="${i}"></td>`;
              }
             
              i++;
@@ -116,8 +117,26 @@
 
 
        });
+
      },
+
+     // Change a checkbox checked value
+     checkedChange: function(){
+       const $this = this;
+       this.tableBody.on('click', 'input', function(e){
+         const dayStatus = $(e.currentTarget).prop("checked");
+               day = $(e.currentTarget).data('day-nbr'),
+               studentName = $(e.currentTarget).parents('tr').attr('id');
+
+         model.setStudentDayAttend(studentName, day, dayStatus);
+
+         $this.tableBody.html('');
+         $this.renderBody();
+       });
+
+     }
    };
 
    view.init();
+   view.checkedChange();
 }());
