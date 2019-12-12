@@ -67,6 +67,14 @@
      init: function(){
        this.studentTable = $('#studentTable');
        this.tableHead = $('#tableHead');
+       this.render();
+       
+     },
+     render: function(){
+       this.renderHead();
+     },
+
+     renderHead: function(){
        let i = 1;
        while(i<= schoolDays){
          this.tableHead.find('.missed-col').before(`<th>${i}</th>`);
