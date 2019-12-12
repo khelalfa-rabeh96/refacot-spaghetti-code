@@ -91,21 +91,30 @@
      renderBody: function(){
        const $this = this;
        studentsNames.forEach(function(name){
-          let studentRow  = `<tr class="student">` ;
+          let studentRow  = `<tr class="student" id="${name}">` ;
           studentRow += `<td class="name-col">${name}</td>`
           let i = 1;
            while(i<= schoolDays){
-            studentRow += `<td class="attend-col"><input type="checkbox"></td>`;
+             const status = model.getStudentDayAttend(name, i);
+             if(status){
+               studentRow += `<td class="attend-col"><input type="checkbox"checked></td>`;
+             }else{
+               studentRow += `<td class="attend-col"><input type="checkbox"></td>`;
+             }
+            
              i++;
           }
           studentRow += `<td class="missed-col">0</td>`;
           studentRow += ' </tr>' 
           $this.tableBody.append(studentRow);
 
+
        });
-     }
+     },
    };
 
-   view.init();
 
+   
+   view.init();
+   
 }());
